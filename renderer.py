@@ -87,7 +87,7 @@ class UbbRenderer(object):
         code = code.rstrip('\n')
         if not lang:
             code = escape(code, smart_amp=False)
-            return '[code]%s\n[/code]\n' % code
+            return '[code]%s[/code]\n' % code
         code = escape(code, quote=True, smart_amp=False)
         return '[code]%s\n[/code]\n' % code
 
@@ -98,6 +98,32 @@ class UbbRenderer(object):
         """
         return '[quote]%s\n[/quote]\n' % text.rstrip('\n')
 
+    def autolink(self, link, is_email=False):
+        """Rendering a given link or email address.
+
+        :param link: link content or email address.
+        :param is_email: whether this is an email or not.
+        """
+        text = link = escape(link)
+        if is_email:
+            link = 'mailto:%s' % link
+        return '[url=%s]%s[/url]' % (link, text)
+
+    def list(self, body, ordered=True):
+        """Rendering list tags like ``<ul>`` and ``<ol>``.
+
+        :param body: body contents of the list.
+        :param ordered: whether this list is ordered or not.
+        """
+        if ordered:
+            tag = "[list=1]"
+        else:
+            tag = "[list]"
+        return '%s\n%s[/list]\n' % (tag, body)
+
+    def list_item(self, text):
+        """Rendering list item snippet. Like ``<li>``."""
+        return '[*]%s\n' % text
 
 class HtmlRenderer(object):
     """The default HTML renderer for rendering Markdown.
