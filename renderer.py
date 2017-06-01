@@ -86,7 +86,7 @@ class UbbRenderer(object):
         """
         code = code.rstrip('\n')
         if not lang:
-            code = escape(code, smart_amp=False)
+            # code = escape(code, smart_amp=False)
             return '[code]%s[/code]\n' % code
         code = escape(code, quote=True, smart_amp=False)
         return '[code]%s\n[/code]\n' % code
@@ -138,6 +138,34 @@ class UbbRenderer(object):
             return '%s' % html
         return '%s' % html
 
+    def block_html(self, html):
+        """Rendering block level pure html content.
+
+        :param html: text content of the html snippet.
+        """
+        # print "block html: " + html
+        if html.startswith("<!-- more -->"):
+            return ''
+        else:
+            raise Exception("not support block_html like: " + html + " yet ..")
+
+    def hrule(self):
+        """Rendering method for ``<hr>`` tag."""
+        return '[hr]\n'
+
+    def inline_html(self, html):
+        """Rendering span level pure html content.
+
+        :param html: text content of the html snippet.
+        """
+        # print "inline html: " + html
+        support_pattern = '<img src="(?P<img_src>.*)" .*>'
+        m = re.search(support_pattern, html)
+        if m:
+            # print m.group("img_src")
+            return '[img]%s[/img]' % m.group("img_src")
+        else:
+            raise Exception("not support inline_html like: " + html + " yet ..")
 
 class HtmlRenderer(object):
     """The default HTML renderer for rendering Markdown.
