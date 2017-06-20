@@ -167,6 +167,11 @@ class UbbRenderer(object):
         else:
             raise Exception("not support inline_html like: " + html + " yet ..")
 
+    def newline(self):
+        """Rendering newline element."""
+        return ''
+
+
 class HtmlRenderer(object):
     """The default HTML renderer for rendering Markdown.
     Copy from mistune ..
